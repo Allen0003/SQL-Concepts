@@ -1,0 +1,16 @@
+If you want to do 'conditional search', then you can put the logic part in to stored 
+procedure in the database. Meanwhile, in the back-end part, only pass parameters to db. 
+Even if all parameters are null, it is still ok. Just follow the structure shows as below
+
+CREATE DEFINER=`testuse`@`%` PROCEDURE `GetGameSetting`(IN _zone_id INT(5), IN _game_code VARCHAR(30), IN _game_enable INT(3))
+
+BEGIN
+	SELECT game_code,pic_path,game_enable,url
+	FROM night.`game_setting`
+	WHERE zone_id = IFNULL(_zone_id, zone_id)
+	AND
+	game_code = IFNULL(_game_code, game_code)
+	AND
+	game_enable =IFNULL(_game_enable, game_enable)
+	;
+END$$
